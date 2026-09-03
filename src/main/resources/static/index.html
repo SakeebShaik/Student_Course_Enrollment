@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Course Management System</title>
+    <meta name="description" content="A simple, fast, and modern student course management and enrollment system.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/landing.css">
+    <script src="js/common.js"></script>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<header class="navbar">
+    <a href="index.html" class="brand-logo">
+        <div class="brand-icon">📚</div>
+        <span>CourseManager</span>
+    </a>
+
+    <div class="nav-actions">
+        <!-- Theme Toggle -->
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode" aria-label="Toggle theme">
+            🌙
+        </button>
+
+        <div id="landingNavActions" style="display: flex; gap: 0.5rem; align-items: center;">
+            <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+            <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+        </div>
+    </div>
+</header>
+
+<!-- Main Landing Content -->
+<main>
+    <section class="hero-section">
+        <div class="hero-pill">
+            Academic Course Registration Portal
+        </div>
+
+        <h1 class="hero-title">
+            Student & Course Management System
+        </h1>
+
+        <p class="hero-desc">
+            A fast, reliable platform for students to enroll in courses and for administrators to manage academic records in real-time.
+        </p>
+
+        <div class="hero-cta-group">
+            <a href="dashboard.html" class="btn btn-primary btn-lg" id="heroPortalBtn">
+                Go to Dashboard
+            </a>
+            <a href="login.html" class="btn btn-secondary btn-lg">
+                Sign In
+            </a>
+            <a href="register.html" class="btn btn-secondary btn-lg">
+                Register
+            </a>
+        </div>
+    </section>
+
+    <!-- Stats Ribbon -->
+    <div class="stats-ribbon">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-item-number">100%</div>
+                <div class="stat-item-label">Data Isolation</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-item-number">Real-Time</div>
+                <div class="stat-item-label">Seat Capacity Tracking</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-item-number">JWT Auth</div>
+                <div class="stat-item-label">Secure Access</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-item-number">2 Roles</div>
+                <div class="stat-item-label">Student & Admin</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Overview -->
+    <section class="features-section">
+        <div class="section-header">
+            <div class="section-tag">Key Features</div>
+            <h2 class="section-title">Everything You Need for Course Enrollment</h2>
+            <p class="section-subtitle">Designed for simplicity, speed, and clear academic tracking.</p>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon-box">🎓</div>
+                <h3 class="feature-title">Student Dashboard</h3>
+                <p class="feature-text">
+                    View your enrolled courses, monitor your total earned credits, and browse open catalog offerings.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-box">⚡</div>
+                <h3 class="feature-title">1-Click Enrollment</h3>
+                <p class="feature-text">
+                    Instantly register for open courses with server-side capacity checks and live seat availability.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-box">🛡️</div>
+                <h3 class="feature-title">Admin Management</h3>
+                <p class="feature-text">
+                    Create new courses, manage the student directory, and oversee course-student enrollment assignments.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-box">🌓</div>
+                <h3 class="feature-title">Dark & Light Themes</h3>
+                <p class="feature-text">
+                    Switch between crisp light mode and comfortable dark mode anytime with a single click.
+                </p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <p>© 2026 Student Course Management System. Powered by Spring Boot.</p>
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        initTheme();
+        const user = getCurrentUser();
+        if (user) {
+            const navActions = document.getElementById("landingNavActions");
+            const heroBtn = document.getElementById("heroPortalBtn");
+            if (navActions) {
+                navActions.innerHTML = `
+                    <span class="badge ${user.isAdmin ? 'badge-primary' : 'badge-success'}">${escapeHtml(user.username)} (${user.isAdmin ? 'Admin' : 'Student'})</span>
+                    <a href="dashboard.html" class="btn btn-primary btn-sm">Dashboard →</a>
+                    <button onclick="logout()" class="btn btn-secondary btn-sm">Logout</button>
+                `;
+            }
+            if (heroBtn) {
+                heroBtn.innerHTML = `Go to ${user.isAdmin ? 'Admin' : 'Student'} Dashboard →`;
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

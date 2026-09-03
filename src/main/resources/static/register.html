@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — Student Course Management</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/common.js"></script>
+</head>
+<body>
+
+<header class="navbar">
+    <a href="index.html" class="brand-logo">
+        <div class="brand-icon">📚</div>
+        <span>CourseManager</span>
+    </a>
+
+    <div class="nav-actions">
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode" aria-label="Toggle theme">
+            🌙
+        </button>
+        <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+    </div>
+</header>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 class="auth-title">Create Account</h1>
+            <p class="auth-subtitle">Register to start enrolling in available courses</p>
+        </div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    class="form-control"
+                    placeholder="Choose a username"
+                    required
+                    autocomplete="username"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="name" class="form-label">Full Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="Enter your full name"
+                    required
+                    autocomplete="name"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-control"
+                    placeholder="you@example.com"
+                    required
+                    autocomplete="email"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-control"
+                    placeholder="Enter password"
+                    required
+                    autocomplete="new-password"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    class="form-control"
+                    placeholder="Confirm password"
+                    required
+                    autocomplete="new-password"
+                >
+            </div>
+
+            <button type="submit" id="registerBtn" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem; padding: 0.7rem;">
+                Create Account
+            </button>
+        </form>
+
+        <div id="message" style="margin-top: 1rem; text-align: center;"></div>
+
+        <div class="auth-footer">
+            <p>
+                Already have an account?
+                <a href="login.html">Sign In</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>© 2026 Student Course Management System</p>
+</footer>
+
+<script src="js/register.js"></script>
+
+</body>
+</html>
