@@ -1,139 +1,213 @@
 Student Course Management System
 
-A web-based Student Course Management System built with Java 17+,
-Spring Boot, Spring Web, Spring Data JPA, MySQL/PostgreSQL, HTML5, CSS3,
-and JavaScript.
+A web-based Student Course Management System built using Java 17+, Spring Boot, Spring Web, Spring Data JPA, MySQL/PostgreSQL, HTML5, CSS3, and JavaScript.
 
-The application provides separate workspaces for Administrators and
-Students. Administrators can manage students, courses, and
-enrollments, while students can view the course catalog, check course
-capacity, and enroll in courses.
+The application provides separate workspaces for Administrators and Students. Administrators can manage students, courses, and enrollments, while students can view available courses, check course capacity, and enroll in courses.
 
 Features
-
-Authentication and Authorization
-
+Authentication & Authorization
 User login using username and password.
-
 JWT-based authentication.
-
-Role-based access for Administrator and Student.
-
-Protected backend API endpoints.
-
-The frontend loads the appropriate workspace according to the
-authenticated user's role.
-
+Role-based access control.
+Separate Admin and Student workspaces.
+Protected backend REST APIs.
+JWT is included with authenticated API requests.
 Administrator Features
-
-View dashboard KPIs.
-
-View, add, update, and delete students.
-
-View, add, update, and delete courses.
-
+View Admin dashboard.
+View total students.
+View total courses.
+View total enrollments.
+View total course capacity.
+Add students.
+Update student information.
+Delete students.
+Add courses.
+Update courses.
+Delete courses.
 View all enrollments.
-
 Manually enroll a student into a course.
-
 Remove an enrollment.
-
 View courses enrolled by a specific student.
-
-Search/filter students and courses.
-
-Student Features
-
-View student profile.
-
-View enrolled courses.
-
-View course catalog.
-
+Search students.
 Search courses.
-
-View course capacity and available seats.
-
-Enroll in a course.
-
+Student Features
+View student profile.
+View enrolled courses.
+View available course catalog.
+Search courses.
+View course credits.
+View course capacity.
+View available seats.
+Enroll in courses.
 View course details.
-
-View enrollment and credit statistics.
-
+View total enrolled courses.
+View total credits.
 Frontend Features
+Dynamic dashboard using JavaScript.
+Client-side form validation.
+Dynamic course and student searching.
+Dynamic DOM rendering.
+Modal dialogs for details and forms.
+No full-page refresh after CRUD operations.
+Separate Admin and Student navigation.
+Toast notifications for success and error messages.
+Application Screenshots
 
-The dashboard uses JavaScript to update the DOM without a full browser
-refresh after CRUD operations.
+Create a screenshots folder in the root of the project and place your screenshots there.
 
-Typical flow:
+Login Page
 
-User Action
-    ↓
-JavaScript Event Handler
-    ↓
-apiFetch()
-    ↓
-HTTP Request
-    ↓
-Spring Boot Backend
-    ↓
-Database
-    ↓
-HTTP Response
-    ↓
-Frontend State
-    ↓
-render...() Function
-    ↓
-DOM Update
+
+
+
+Student Dashboard
+
+
+
+
+Student Course Catalog
+
+
+
+
+Student My Courses
+
+
+
+
+Admin Dashboard
+
+
+
+
+Admin Course Management
+
+
+
+
+Admin Student Management
+
+
+
+
+Admin Enrollment Management
+
+
+
 
 Technology Stack
+Layer	Technology
+Programming Language	Java 17+
+Backend Framework	Spring Boot
+REST API	Spring Web
+Data Access	Spring Data JPA
+Database	MySQL / PostgreSQL
+Security	Spring Security
+Authentication	JWT
+Frontend	HTML5, CSS3, JavaScript
+Build Tool	Maven
+IDE	IntelliJ IDEA
+Application Architecture
 
-Layer            Technology
+The application follows a frontend-backend architecture where the frontend communicates with the Spring Boot backend through REST APIs.
 
-Backend          Java 17+
-Framework        Spring Boot
-REST API         Spring Web
-Persistence      Spring Data JPA
-Database         MySQL / PostgreSQL
-Authentication   JWT
-Frontend         HTML5, CSS3, JavaScript
-Build Tool       Maven
-IDE              IntelliJ IDEA
+                 STUDENT COURSE MANAGEMENT SYSTEM
+                              |
+                +-------------+-------------+
+                |                           |
+                v                           v
+           ADMIN USER                 STUDENT USER
+                |                           |
+                +-------------+-------------+
+                              |
+                              v
+                    HTML / CSS / JavaScript
+                              |
+                              |
+                         HTTP / JSON
+                              |
+                         JWT Token
+                              |
+                              v
+                    Spring Boot Backend
+                              |
+                +-------------+-------------+
+                |             |             |
+                v             v             v
+          Controllers     Services      Security
+                |             |             |
+                +-------------+-------------+
+                              |
+                              v
+                     Spring Data JPA
+                              |
+                              v
+                     MySQL / PostgreSQL
+Project Flow
 
-Architecture
+The overall application flow is:
 
-┌──────────────────────────────┐
-│          Browser             │
-│                              │
-│ HTML + CSS + JavaScript      │
-└──────────────┬───────────────┘
-               │
-               │ HTTP / JSON
-               │ JWT Authorization
-               ▼
-┌──────────────────────────────┐
-│       Spring Boot API        │
-│                              │
-│ Controllers                  │
-│ Services                     │
-│ Security / JWT               │
-│ Repositories                 │
-└──────────────┬───────────────┘
-               │
-               ▼
-┌──────────────────────────────┐
-│       MySQL / PostgreSQL     │
-│                              │
-│ Students                     │
-│ Courses                      │
-│ Enrollments                  │
-│ Authentication data          │
-└──────────────────────────────┘
-
+User
+  |
+  v
+Login Page
+  |
+  v
+Username + Password
+  |
+  v
+Authentication API
+  |
+  v
+Spring Security
+  |
+  v
+JWT Generated
+  |
+  v
+JWT Stored in Frontend
+  |
+  v
+Dashboard
+  |
+  +--------------------+
+  |                    |
+  v                    v
+Admin Workspace    Student Workspace
+  |                    |
+  v                    v
+CRUD Operations    Course Enrollment
+  |                    |
+  +---------+----------+
+            |
+            v
+       REST APIs
+            |
+            v
+       Spring Boot
+            |
+            v
+         Database
 Frontend
 
-The main dashboard JavaScript maintains temporary frontend state:
+The frontend consists primarily of:
+
+HTML pages
+CSS files
+JavaScript files
+
+The JavaScript is responsible for:
+
+Handling user interactions.
+Calling REST APIs.
+Handling authentication.
+Maintaining frontend state.
+Rendering data into the DOM.
+Updating the UI after API operations.
+Performing client-side validation.
+Dashboard JavaScript
+
+The main dashboard controller maintains application state using:
 
 const state = {
     currentUser: null,
@@ -146,65 +220,83 @@ const state = {
     activeAdminView: "overview"
 };
 
-Important State Properties
+This state contains the data currently being used by the dashboard.
 
-currentUser --- authenticated user's information.
-
-currentStudent --- logged-in student's profile.
-
-courses --- available courses.
-
-students --- students loaded for the administrator.
-
-enrollments --- enrollment records.
-
-studentEnrolledCourses --- courses belonging to the logged-in
-student.
-
-activeTab --- current Student tab.
-
-activeAdminView --- current Admin view.
-
+State Properties
+Property	Purpose
+currentUser	Stores the authenticated user
+currentStudent	Stores the logged-in student's information
+courses	Stores available courses
+students	Stores student records
+enrollments	Stores enrollment records
+studentEnrolledCourses	Stores courses enrolled by the current student
+activeTab	Stores the current Student tab
+activeAdminView	Stores the current Admin view
 Dashboard Initialization
 
-The dashboard waits for the HTML document to finish loading:
+When the dashboard page loads:
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-It then:
+the application:
 
 Initializes the theme.
-
 Checks whether the user is logged in.
-
-Initializes common UI.
-
+Initializes common UI elements.
 Checks the user's role.
+Loads the appropriate workspace.
 
-Loads the Admin or Student workspace.
+The flow is:
 
+Page Loaded
+    |
+    v
 DOMContentLoaded
-      ↓
+    |
+    v
+initTheme()
+    |
+    v
 checkLogin()
-      ↓
-Authenticated?
-   ┌──┴──┐
-  No    Yes
-  ↓      ↓
-Stop   Check role
-          ↓
-    ┌─────┴─────┐
-  Admin       Student
-    ↓             ↓
-Admin UI       Student UI
+    |
+    v
+Is User Logged In?
+    |
+    +----------+
+    |          |
+   No         Yes
+    |          |
+    v          v
+  Stop    Check User Role
+                |
+          +-----+-----+
+          |           |
+        Admin       Student
+          |           |
+          v           v
+   Admin Workspace  Student Workspace
+Student Workspace
 
-Student Data Flow
+The Student workspace is initialized using:
 
-The Student workspace requests:
+initStudentWorkspace()
+
+It:
+
+Displays the Student workspace.
+Hides the Admin workspace.
+Configures Student navigation.
+Loads Student data.
+Opens the My Courses tab.
+Loading Student Data
+
+The application loads three sets of data:
 
 GET /api/students/me
 GET /api/courses
 GET /api/students/me/courses
+
+These requests are executed using Promise.all().
 
 The responses are stored in frontend state:
 
@@ -212,122 +304,248 @@ state.currentStudent = studentRes.data;
 state.courses = coursesRes.data || [];
 state.studentEnrolledCourses = enrolledRes.data || [];
 
-Then the UI is rendered using functions such as:
+The UI is then rendered using:
 
 renderStudentProfile()
 renderStudentStats()
 renderStudentEnrolledCourses()
 renderStudentCatalog()
-
 Student Enrollment Flow
 
-When a student clicks Enroll:
+When a student clicks the Enroll button:
 
-Click Enroll
-    ↓
+Student clicks Enroll
+        |
+        v
 enrollCurrentStudent(courseId)
-    ↓
+        |
+        v
 POST /api/enrollments/me/{courseId}
-    ↓
-Backend
-    ↓
+        |
+        v
+Spring Boot Backend
+        |
+        v
 Database
-    ↓
-Success
-    ↓
+        |
+        v
+Successful Response
+        |
+        v
 loadStudentData()
-    ↓
-Fresh API data
-    ↓
-Render functions
-    ↓
+        |
+        v
+Updated Frontend State
+        |
+        v
+Rendering Functions
+        |
+        v
 Updated DOM
 
-The browser does not need to perform a full page reload.
+The browser does not need to perform a complete page reload.
 
-Administrator Data Flow
+Admin Workspace
 
-The Admin workspace requests:
+The Admin workspace is initialized using:
+
+initAdminWorkspace()
+
+It:
+
+Displays the Admin workspace.
+Hides the Student workspace.
+Configures Admin navigation.
+Loads Admin data.
+Opens the Admin overview.
+Loading Admin Data
+
+The Admin dashboard loads:
 
 GET /api/courses
 GET /api/students
 GET /api/enrollments
 
-The data is stored in:
+The returned data is stored in:
 
 state.courses
 state.students
 state.enrollments
 
-Then the following functions render the Admin UI:
+The following functions then update the Admin interface:
 
 renderAdminKPIs()
 renderAdminCoursesTable()
 renderAdminStudentsTable()
 renderAdminEnrollmentsHub()
 populateEnrollmentDropdowns()
+Admin Add Course Flow
 
-Add Course Flow
+When the administrator adds a course:
 
-When the administrator submits the Add Course form:
-
-Submit form
-    ↓
+Admin opens Add Course
+        |
+        v
+Admin enters course information
+        |
+        v
+Submit Form
+        |
+        v
 event.preventDefault()
-    ↓
-Frontend validation
-    ↓
+        |
+        v
+validateCourse()
+        |
+        v
 POST /api/courses
-    ↓
-Spring Boot backend
-    ↓
+        |
+        v
+Spring Boot Backend
+        |
+        v
 Database
-    ↓
+        |
+        v
+Successful Response
+        |
+        v
 loadAdminData()
-    ↓
+        |
+        v
 renderAdminCoursesTable()
-    ↓
-New course appears
+        |
+        v
+Updated Course Table
 
-event.preventDefault() prevents normal browser form submission and
-therefore prevents the page from navigating/reloading.
+event.preventDefault() prevents the browser from performing its normal form submission and page navigation.
 
-Update and Delete Flow
+Admin Add Student Flow
 
-Update Course
+The Admin can create a student by submitting:
 
-Edit
- ↓
+Name
+Username
+Password
+Email
+
+The frontend validates the information and sends:
+
+POST /api/students
+
+Example request:
+
+{
+  "name": "John Doe",
+  "username": "john.doe",
+  "password": "password",
+  "email": "john@example.com"
+}
+
+After successful creation:
+
+POST /api/students
+        |
+        v
+Backend
+        |
+        v
+Database
+        |
+        v
+loadAdminData()
+        |
+        v
+renderAdminStudentsTable()
+        |
+        v
+New Student Appears
+Admin Update Course Flow
+
+The administrator can update an existing course.
+
+The frontend sends:
+
 PUT /api/courses/{courseId}
- ↓
-Backend
- ↓
-Database
- ↓
-loadAdminData()
- ↓
-renderAdminCoursesTable()
 
-Delete Course
+with updated course information.
 
-Delete
- ↓
+After a successful response:
+
+await loadAdminData();
+
+is called.
+
+This retrieves the latest data and re-renders the course table.
+
+Admin Delete Course Flow
+
+The administrator can delete a course.
+
+The frontend sends:
+
 DELETE /api/courses/{courseId}
- ↓
+
+After successful deletion:
+
+DELETE Request
+      |
+      v
 Backend
- ↓
+      |
+      v
 Database
- ↓
+      |
+      v
 loadAdminData()
- ↓
+      |
+      v
 renderAdminCoursesTable()
+      |
+      v
+Deleted Course Removed From UI
 
-The same approach is used for students and enrollments.
+No complete browser refresh is required.
 
+Admin Student Management
+
+Administrators can:
+
+Add students.
+Edit students.
+Delete students.
+View a student's enrolled courses.
+
+Relevant API endpoints include:
+
+GET    /api/students
+POST   /api/students
+PUT    /api/students/{id}
+DELETE /api/students/{id}
+GET    /api/students/{id}/courses
+Enrollment Management
+
+Administrators can manually create an enrollment.
+
+The frontend sends:
+
+POST /api/enrollments
+
+Example:
+
+{
+  "studentId": 1,
+  "courseId": 5
+}
+
+Administrators can remove an enrollment using:
+
+DELETE /api/enrollments/{enrollmentId}
 DOM Rendering
 
-The application updates specific parts of the page rather than reloading
-the entire document.
+One of the important frontend concepts in this project is dynamic DOM rendering.
+
+Instead of refreshing the complete page, JavaScript updates specific elements.
 
 For example:
 
@@ -337,13 +555,15 @@ tbody.innerHTML = filtered.map(course => `
     </tr>
 `).join("");
 
-and:
+This dynamically generates the rows of the course table.
+
+Another example is:
 
 element.textContent = value;
 
-These operations update the DOM directly.
+which updates the text of a particular element.
 
-Important rendering functions include:
+The main rendering functions are:
 
 renderStudentStats()
 renderStudentEnrolledCourses()
@@ -354,144 +574,264 @@ renderAdminKPIs()
 renderAdminCoursesTable()
 renderAdminStudentsTable()
 renderAdminEnrollmentsHub()
+How the Page Updates Without Refreshing
+
+The application follows this pattern:
+
+User performs an action
+        |
+        v
+JavaScript event handler
+        |
+        v
+apiFetch()
+        |
+        v
+REST API request
+        |
+        v
+Spring Boot
+        |
+        v
+Database
+        |
+        v
+API Response
+        |
+        v
+loadAdminData()
+or
+loadStudentData()
+        |
+        v
+Frontend state updated
+        |
+        v
+render...() function
+        |
+        v
+DOM updated
+
+Therefore, the browser does not have to reload the complete HTML page.
 
 JWT Authentication
 
-The application uses JWT-based authentication.
+JWT is used to authenticate protected API requests.
 
-General flow:
+The general authentication flow is:
 
-Username + Password
-        ↓
-Login API
-        ↓
-Spring Security authentication
-        ↓
-JWT generated
-        ↓
-Frontend receives JWT
-        ↓
-JWT is stored by frontend
-        ↓
-apiFetch() sends authenticated requests
-        ↓
-Backend validates JWT
-        ↓
-Protected API operation
+User enters username and password
+             |
+             v
+        Login Request
+             |
+             v
+      Spring Security
+             |
+             v
+       User Verified
+             |
+             v
+         JWT Created
+             |
+             v
+      Frontend Receives JWT
+             |
+             v
+       JWT Stored
+             |
+             v
+       Authenticated API Request
+             |
+             v
+Authorization: Bearer <JWT>
+             |
+             v
+      Spring Security Filter
+             |
+             v
+       JWT Validation
+             |
+             v
+      Request Authorized
 
-The dashboard functions call the common apiFetch() helper, for
-example:
+The dashboard functions use the common apiFetch() helper:
 
 apiFetch("/api/courses")
 
-rather than manually constructing the authentication request in every
-business function.
+rather than manually creating the authentication header inside every individual operation.
 
-The exact token-storage and Authorization-header implementation belongs
-to the authentication/API utility code, not the dashboard rendering
-functions shown in dashboard.js.
+The JWT storage and Authorization-header implementation are handled by the application's authentication/API utility code.
 
+API Endpoints
+Method	Endpoint	Description
+GET	/api/students/me	Get logged-in student
+GET	/api/courses	Get all courses
+GET	/api/students/me/courses	Get logged-in student's courses
+POST	/api/enrollments/me/{courseId}	Enroll current student
+GET	/api/students	Get all students
+POST	/api/students	Create student
+PUT	/api/students/{id}	Update student
+DELETE	/api/students/{id}	Delete student
+GET	/api/students/{id}/courses	Get student's courses
+POST	/api/courses	Create course
+PUT	/api/courses/{id}	Update course
+DELETE	/api/courses/{id}	Delete course
+GET	/api/enrollments	Get all enrollments
+POST	/api/enrollments	Create enrollment
+DELETE	/api/enrollments/{id}	Delete enrollment
 Validation
 
-The frontend contains:
+The frontend contains validation functions:
 
 validateCourse()
 validateStudent()
+Course Validation
 
-Course validation checks course name, credits, and capacity.
+The course form validates:
 
-Student validation checks name and email, while the Add Student form
-also validates username and password.
+Course name.
+Course name length.
+Course name format.
+Credits.
+Capacity.
 
-Frontend validation improves user experience, but equivalent validation
-should exist on the backend because client-side validation cannot be
-trusted for security.
+Credits must be within the configured range and capacity must be within the configured range.
+
+Student Validation
+
+The student form validates:
+
+Student name.
+Email.
+Username.
+Password length.
+
+Frontend validation improves user experience, but important validation should also be performed by the backend because client-side validation cannot be trusted as a security mechanism.
 
 Search and Filtering
 
-Course and student searches are performed against data already loaded
-into frontend state.
+The Admin and Student dashboards support searching.
 
-For example:
+For example, course searching uses:
 
 state.courses.filter(...)
 
-The search therefore does not need an API request for every keystroke.
+The filtering happens against the data already loaded into frontend state.
 
-User types
-    ↓
+The flow is:
+
+User types search text
+        |
+        v
 input event
-    ↓
-Filter local state
-    ↓
+        |
+        v
+Filter frontend state
+        |
+        v
 Render filtered results
 
-API Overview
+Therefore, the application does not need to call the backend for every search keystroke.
 
-Method   Endpoint                           Purpose
-
-GET      /api/students/me                 Get current student
-GET      /api/courses                     Get courses
-GET      /api/students/me/courses         Get current student's courses
-POST     /api/enrollments/me/{courseId}   Student enrollment
-GET      /api/students                    Get students
-POST     /api/students                    Create student
-PUT      /api/students/{id}               Update student
-DELETE   /api/students/{id}               Delete student
-POST     /api/courses                     Create course
-PUT      /api/courses/{id}                Update course
-DELETE   /api/courses/{id}                Delete course
-GET      /api/enrollments                 Get enrollments
-POST     /api/enrollments                 Create enrollment
-DELETE   /api/enrollments/{id}            Delete enrollment
-GET      /api/students/{id}/courses       Get a student's courses
-
+Important JavaScript Functions
+Function	Responsibility
+initShellUI()	Initializes common dashboard UI
+initStudentWorkspace()	Initializes Student workspace
+setupStudentTabs()	Configures Student navigation
+switchStudentTab()	Switches Student tabs
+loadStudentData()	Loads Student data
+renderStudentStats()	Renders Student statistics
+renderStudentEnrolledCourses()	Renders enrolled courses
+renderStudentCatalog()	Renders course catalog
+renderStudentProfile()	Renders Student profile
+enrollCurrentStudent()	Enrolls Student in a course
+initAdminWorkspace()	Initializes Admin workspace
+setupAdminNavigation()	Configures Admin navigation
+switchAdminView()	Switches Admin views
+loadAdminData()	Loads Admin data
+renderAdminKPIs()	Renders Admin dashboard statistics
+renderAdminCoursesTable()	Renders course table
+renderAdminStudentsTable()	Renders student table
+renderAdminEnrollmentsHub()	Renders enrollment table
+populateEnrollmentDropdowns()	Populates enrollment dropdowns
+setupAdminForms()	Configures Admin forms
+validateCourse()	Validates course input
+validateStudent()	Validates student input
+editCourse()	Updates a course
+deleteCourse()	Deletes a course
+editStudent()	Updates a student
+deleteStudent()	Deletes a student
+deleteEnrollment()	Removes an enrollment
+openCourseDetailsModal()	Displays course details
+inspectStudentCoursesModal()	Displays a student's courses
+escapeJsString()	Escapes JavaScript strings
 Concurrency Consideration
 
-The frontend's course availability is only a display value. The backend
-must perform the final validation when an enrollment request arrives.
+The frontend displays course availability using data retrieved from the backend, but the frontend should not be treated as the final source of truth.
 
-For example:
+For example, consider two devices:
 
-Device A: Admin
-       ↓
-DELETE course
-       ↓
+Device A
+Admin
+  |
+  | DELETE course
+  v
 Backend
-       ↓
-Course removed
+  |
+  v
+Course Deleted
 
-Device B: Student
-       ↓
-POST enrollment
-       ↓
-Backend checks current database state
-       ↓
-Reject if course no longer exists
 
-This prevents a stale browser view from being treated as the source of
-truth.
+Device B
+Student
+  |
+  | POST enrollment
+  v
+Backend
+  |
+  v
+Check current database state
+  |
+  +----------------------+
+  |                      |
+Course exists       Course deleted
+  |                      |
+  v                      v
+Process enrollment    Reject request
 
-If immediate updates between multiple open devices are required, the
-application would need an additional real-time mechanism such as
-WebSockets or Server-Sent Events. The current dashboard refreshes its
-state when it makes another API request.
+This is important because the Student's browser may still display an old course list while the Admin has already deleted that course.
+
+The backend must perform the final validation against the current database state.
+
+For real-time synchronization where changes on one device immediately appear on another device, an additional mechanism such as WebSockets or Server-Sent Events can be introduced.
+
+Database
+
+The application uses a relational database such as:
+
+MySQL
+PostgreSQL
+
+The database stores application data such as:
+
+Users
+Students
+Courses
+Enrollments
+
+Spring Data JPA is used to communicate between the Java application and the database.
 
 Running the Application
-
 Prerequisites
 
 Install:
 
 Java 17 or later
-
 Maven
-
 MySQL or PostgreSQL
-
-IntelliJ IDEA or another Java IDE
-
-A modern web browser
+IntelliJ IDEA
+Modern web browser
 
 Verify Java:
 
@@ -500,178 +840,167 @@ java -version
 Verify Maven:
 
 mvn -version
-
 Database Configuration
-
 Start MySQL or PostgreSQL.
-
 Create the application database.
-
 Configure the database connection in the Spring Boot configuration.
-
 Start the application.
 
-Typical configuration is similar to:
+Example configuration:
 
 spring.datasource.url=jdbc:mysql://localhost:3306/student_course_management
 spring.datasource.username=<database-username>
 spring.datasource.password=<database-password>
 
-Use the actual configuration required by the project environment.
+Use the actual database configuration required by your environment.
 
-Run with IntelliJ IDEA
-
+Running with IntelliJ IDEA
+Clone or download the repository.
 Open the project in IntelliJ IDEA.
-
 Allow Maven dependencies to load.
-
 Configure the database.
-
+Check the application configuration.
 Run the Spring Boot main application class.
+Open the application in your browser.
+Running with Maven
 
-Open the application in a browser.
-
-Run with Maven
+From the project root directory:
 
 mvn spring-boot:run
+Recommended Code Reading Order
 
-Recommended Code-Reading Order
+If you are learning this project, the recommended order is:
 
-For someone learning this project, the recommended order is:
+1. HTML
+       |
+       v
+2. CSS
+       |
+       v
+3. JavaScript
+       |
+       v
+4. apiFetch()
+       |
+       v
+5. JWT Authentication
+       |
+       v
+6. REST Controllers
+       |
+       v
+7. Service Layer
+       |
+       v
+8. Repository Layer
+       |
+       v
+9. Database
 
-HTML
-  ↓
-JavaScript
-  ↓
-apiFetch()
-  ↓
-JWT Authentication
-  ↓
-REST Controllers
-  ↓
-Service Layer
-  ↓
-JPA Repositories
-  ↓
-Database
-
-For the dashboard:
+For the dashboard specifically:
 
 dashboard.html
-      ↓
+       |
+       v
 dashboard.js
-      ↓
+       |
+       v
 DOMContentLoaded
-      ↓
+       |
+       v
 checkLogin()
-      ↓
-initAdminWorkspace()
-       OR
-initStudentWorkspace()
-      ↓
-loadAdminData()
-       OR
-loadStudentData()
-      ↓
-render functions
-      ↓
-DOM
-
-Key dashboard.js Functions
-
-Function                           Responsibility
-
-initShellUI()                    Initialize common dashboard UI
-initStudentWorkspace()           Initialize Student workspace
-setupStudentTabs()               Configure Student navigation
-switchStudentTab()               Switch Student views
-loadStudentData()                Fetch Student data
-renderStudentStats()             Render Student statistics
-renderStudentEnrolledCourses()   Render enrolled courses
-renderStudentCatalog()           Render course catalog
-renderStudentProfile()           Render Student profile
-enrollCurrentStudent()           Enroll Student in a course
-initAdminWorkspace()             Initialize Admin workspace
-setupAdminNavigation()           Configure Admin navigation
-switchAdminView()                Switch Admin views
-loadAdminData()                  Fetch Admin data
-renderAdminKPIs()                Render Admin metrics
-renderAdminCoursesTable()        Render course table
-renderAdminStudentsTable()       Render student table
-renderAdminEnrollmentsHub()      Render enrollment table
-populateEnrollmentDropdowns()    Populate enrollment forms
-setupAdminForms()                Configure Admin forms
-validateCourse()                 Validate course input
-validateStudent()                Validate student input
-editCourse()                     Update a course
-deleteCourse()                   Delete a course
-editStudent()                    Update a student
-deleteStudent()                  Delete a student
-deleteEnrollment()               Remove enrollment
-openCourseDetailsModal()         Show course details
-inspectStudentCoursesModal()     Show a student's courses
-escapeJsString()                 Escape JavaScript strings
-
+       |
+       +--------------------+
+       |                    |
+       v                    v
+initAdminWorkspace()   initStudentWorkspace()
+       |                    |
+       v                    v
+loadAdminData()        loadStudentData()
+       |                    |
+       v                    v
+render...()            render...()
+       |                    |
+       +----------+---------+
+                  |
+                  v
+                 DOM
 Future Improvements
 
-Potential improvements include:
+Possible future improvements include:
 
-Add automated unit and integration tests.
-
-Add comprehensive backend validation.
-
-Add stronger concurrency handling for course enrollment.
-
-Add centralized frontend error handling.
-
+Add JUnit and Mockito test coverage.
+Add integration tests.
+Add stronger backend validation.
+Add database constraints.
 Add pagination for large datasets.
-
-Add real-time synchronization with WebSockets or Server-Sent Events.
-
+Add centralized frontend error handling.
+Add real-time synchronization using WebSockets.
+Add JWT refresh-token handling.
+Add audit logging for Admin operations.
 Replace inline onclick handlers with event listeners.
-
-Add audit logging for administrator operations.
-
-Add JWT expiration/refresh handling.
-
-Add database-level constraints where appropriate.
-
+Add API documentation using OpenAPI/Swagger.
+Improve exception handling and standardized API error responses.
 Summary
 
-The Student Course Management System is an API-driven application with
-two primary roles:
+The Student Course Management System provides role-based functionality for Administrators and Students.
 
-Student Course Management System
-              │
-       ┌──────┴──────┐
-       │             │
- Administrator     Student
-       │             │
-   Students       Profile
-   Courses        Catalog
-   Enrollments    My Courses
+                 Student Course
+                 Management System
+                        |
+             +----------+----------+
+             |                     |
+             v                     v
+        Administrator           Student
+             |                     |
+       +-----+-----+         +-----+-----+
+       |     |     |         |     |     |
+   Students Courses Enroll. Profile Catalog
+                                  |
+                                  v
+                             My Courses
 
-The central frontend pattern is:
+The core application flow is:
 
-User Action
-    ↓
+User
+  |
+  v
+Frontend
+  |
+  v
 JavaScript
-    ↓
-apiFetch()
-    ↓
+  |
+  v
+JWT Authentication
+  |
+  v
 REST API
-    ↓
+  |
+  v
 Spring Boot
-    ↓
+  |
+  v
+Service Layer
+  |
+  v
+Repository
+  |
+  v
 Database
-    ↓
+  |
+  v
 Response
-    ↓
+  |
+  v
 Frontend State
-    ↓
-render...()
-    ↓
-DOM Update
+  |
+  v
+DOM Rendering
 
-This design allows the application to update individual parts of the
-page without requiring a complete browser refresh.
+The frontend uses API-driven updates and dynamic DOM rendering so that operations such as adding, updating, deleting, and enrolling can update the relevant parts of the interface without requiring a complete browser refresh.
+
+Author
+
+Sakeeb
+
+Built as a Student Course Management System project using Spring Boot and Java.
