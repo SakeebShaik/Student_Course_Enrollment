@@ -54,42 +54,46 @@ Toast notifications for success and error messages.
 Application Screenshots
 
 Login Page
-
 <img width="1919" height="943" alt="image" src="https://github.com/user-attachments/assets/0b0c321b-64b5-4e70-9d8f-e2c91aa08131" />
 
 
 
 Student Dashboard
+<img width="1917" height="948" alt="image" src="https://github.com/user-attachments/assets/5c3eb986-85ef-4a1e-a283-68a14ccc4094" />
 
 
 
 
 Student Course Catalog
-
+<img width="1898" height="952" alt="image" src="https://github.com/user-attachments/assets/58724f4d-36aa-46bf-9d32-e0878eb55ab6" />
 
 
 
 Student My Courses
-
+<img width="1916" height="947" alt="image" src="https://github.com/user-attachments/assets/258f0d50-1c40-409d-936f-0a48c8babc50" />
 
 
 
 Admin Dashboard
+<img width="1895" height="940" alt="image" src="https://github.com/user-attachments/assets/b96ff84b-dbea-4efe-8daf-23c07ef06c46" />
 
 
 
 
 Admin Course Management
+<img width="1895" height="942" alt="image" src="https://github.com/user-attachments/assets/1c18f660-af7a-46dc-896f-89369c041591" />
 
 
 
 
 Admin Student Management
+<img width="1899" height="939" alt="image" src="https://github.com/user-attachments/assets/f4fa02a2-c3b7-4231-b0ac-2321301f5e5a" />
 
 
 
 
 Admin Enrollment Management
+<img width="1893" height="945" alt="image" src="https://github.com/user-attachments/assets/b233bb86-50ea-44f5-b001-cbc5572ea013" />
 
 
 
