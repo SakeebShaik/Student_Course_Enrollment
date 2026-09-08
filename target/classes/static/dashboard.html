@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Student Course Management</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="js/common.js"></script>
+</head>
+<body>
+
+<!-- Top Navigation Bar -->
+<header class="navbar">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <button id="mobileNavToggle" class="mobile-nav-toggle" title="Toggle Navigation">☰</button>
+        <a href="index.html" class="brand-logo">
+            <div class="brand-icon">📚</div>
+            <span>CourseManager</span>
+        </a>
+    </div>
+
+    <div class="nav-actions">
+        <!-- Dark / Light Theme Toggle -->
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode" aria-label="Toggle theme">
+            🌙
+        </button>
+
+        <div id="headerRoleBadge" class="badge badge-success">Student</div>
+
+        <div class="user-profile-badge">
+            <div class="user-avatar dyn-user-initial">U</div>
+            <div class="user-name dyn-user-name">User</div>
+        </div>
+
+        <button onclick="logout()" class="btn btn-secondary btn-sm" title="Sign Out">
+            Logout
+        </button>
+    </div>
+</header>
+
+<!-- =========================================================================
+     STUDENT WORKSPACE
+     ========================================================================= -->
+<div id="studentWorkspace" style="display: none;">
+    <main class="main-viewport">
+        <!-- Student Header -->
+        <div class="view-header">
+            <div class="view-title-group">
+                <h1>Welcome, <span class="dyn-user-name">Student</span></h1>
+                <p>Manage your course schedule and explore available semester offerings.</p>
+            </div>
+            <div class="view-actions">
+                <button class="btn btn-primary" onclick="switchToCatalogTab()">
+                    + Browse Catalog & Enroll
+                </button>
+            </div>
+        </div>
+
+        <!-- Student KPI Row -->
+        <div class="kpi-grid">
+            <div class="kpi-card emerald">
+                <div class="kpi-header">
+                    <span class="kpi-title">Enrolled Courses</span>
+                    <span class="kpi-icon">📖</span>
+                </div>
+                <div class="kpi-value" id="studentStatEnrolledCount">0</div>
+                <div class="kpi-subtitle">Registered courses</div>
+            </div>
+
+            <div class="kpi-card purple">
+                <div class="kpi-header">
+                    <span class="kpi-title">Total Credits</span>
+                    <span class="kpi-icon">🎯</span>
+                </div>
+                <div class="kpi-value" id="studentStatCredits">0</div>
+                <div class="kpi-subtitle">Enrolled credit units</div>
+            </div>
+
+            <div class="kpi-card amber">
+                <div class="kpi-header">
+                    <span class="kpi-title">Available Courses</span>
+                    <span class="kpi-icon">📚</span>
+                </div>
+                <div class="kpi-value" id="studentStatCatalogCount">0</div>
+                <div class="kpi-subtitle">Open in catalog</div>
+            </div>
+
+            <div class="kpi-card primary">
+                <div class="kpi-header">
+                    <span class="kpi-title">Academic Status</span>
+                    <span class="kpi-icon">✓</span>
+                </div>
+                <div class="kpi-value" style="font-size: 1.35rem; color: var(--success-text);">Active</div>
+                <div class="kpi-subtitle">Good standing</div>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn student-tab-btn active" data-tab="mycourses" id="tabBtn_mycourses">
+                My Enrolled Courses
+            </button>
+            <button class="tab-btn student-tab-btn" data-tab="catalog" id="tabBtn_catalog">
+                Course Catalog & Registration
+            </button>
+            <button class="tab-btn student-tab-btn" data-tab="profile" id="tabBtn_profile">
+                My Student Profile
+            </button>
+        </div>
+
+        <!-- Tab 1: My Enrolled Courses -->
+        <section id="studentTab_mycourses" class="student-view-tab active">
+            <div id="studentEnrolledCoursesGrid" class="course-grid">
+                <!-- Populated by JS -->
+            </div>
+
+            <div id="studentEnrolledEmpty" class="empty-state" style="display: none;">
+                <div class="empty-icon">🎒</div>
+                <div class="empty-title">No Courses Enrolled Yet</div>
+                <p class="empty-desc">
+                    You have not registered for any courses yet. Browse the course catalog to enroll.
+                </p>
+                <button class="btn btn-primary" onclick="switchToCatalogTab()">
+                    Browse Course Catalog →
+                </button>
+            </div>
+        </section>
+
+        <!-- Tab 2: Course Catalog & Registration -->
+        <section id="studentTab_catalog" class="student-view-tab">
+            <div class="table-toolbar" style="border-radius: var(--radius-md); margin-bottom: 1.25rem;">
+                <div class="search-input-wrap">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="catalogSearchInput" placeholder="Search catalog by course name or credits...">
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-muted);">
+                    Select any course below to enroll
+                </div>
+            </div>
+
+            <div id="studentCatalogGrid" class="course-grid">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- Tab 3: Student Profile -->
+        <section id="studentTab_profile" class="student-view-tab">
+            <div class="profile-card">
+                <div class="profile-card-header">
+                    <div class="profile-avatar-lg dyn-user-initial">U</div>
+                    <div>
+                        <h2 style="font-size: 1.25rem;" class="dyn-user-name">Student Name</h2>
+                        <span class="badge badge-success" style="margin-top: 0.25rem;">Registered Student</span>
+                    </div>
+                </div>
+
+                <div class="profile-grid">
+                    <div class="profile-field">
+                        <div class="profile-field-label">Student ID</div>
+                        <div class="profile-field-value" id="profileStudentId">#1</div>
+                    </div>
+
+                    <div class="profile-field">
+                        <div class="profile-field-label">Full Name</div>
+                        <div class="profile-field-value" id="profileStudentName">Student</div>
+                    </div>
+
+                    <div class="profile-field">
+                        <div class="profile-field-label">Email Address</div>
+                        <div class="profile-field-value" id="profileStudentEmail">student@example.com</div>
+                    </div>
+
+                    <div class="profile-field">
+                        <div class="profile-field-label">Role</div>
+                        <div class="profile-field-value">STUDENT</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- =========================================================================
+     ADMINISTRATOR WORKSPACE
+     ========================================================================= -->
+<div id="adminWorkspace" class="dashboard-layout" style="display: none;">
+    <!-- Admin Sidebar -->
+    <aside id="adminSidebar" class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-label">Admin Menu</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li>
+                <button class="nav-item-btn admin-nav-btn active" data-view="overview">
+                    <span>📊</span>
+                    <span>Dashboard Overview</span>
+                </button>
+            </li>
+            <li>
+                <button class="nav-item-btn admin-nav-btn" data-view="courses">
+                    <span>📚</span>
+                    <span>Courses</span>
+                </button>
+            </li>
+            <li>
+                <button class="nav-item-btn admin-nav-btn" data-view="students">
+                    <span>👥</span>
+                    <span>Students</span>
+                </button>
+            </li>
+            <li>
+                <button class="nav-item-btn admin-nav-btn" data-view="enrollments">
+                    <span>📑</span>
+                    <span>Enrollments</span>
+                </button>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="user-profile-badge">
+                <div class="user-avatar dyn-user-initial">A</div>
+                <div style="font-size: 0.825rem; font-weight: 600;" class="dyn-user-name">Admin</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Admin Viewport -->
+    <main class="main-viewport">
+        <!-- View 1: Overview -->
+        <section id="adminView_overview" class="admin-view-section active">
+            <div class="view-header">
+                <div class="view-title-group">
+                    <h1>Administrator Dashboard</h1>
+                    <p>Overview of courses, student records, and system enrollments.</p>
+                </div>
+                <div class="view-actions">
+                    <button class="btn btn-primary btn-sm" onclick="openModal('addCourseModal')">
+                        + Add Course
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="openModal('addStudentModal')">
+                        + Add Student
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin KPIs -->
+            <div class="kpi-grid">
+                <div class="kpi-card emerald">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Total Students</span>
+                        <span class="kpi-icon">👥</span>
+                    </div>
+                    <div class="kpi-value" id="kpiTotalStudents">0</div>
+                    <div class="kpi-subtitle">Registered student records</div>
+                </div>
+
+                <div class="kpi-card primary">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Total Courses</span>
+                        <span class="kpi-icon">📚</span>
+                    </div>
+                    <div class="kpi-value" id="kpiTotalCourses">0</div>
+                    <div class="kpi-subtitle">Active courses</div>
+                </div>
+
+                <div class="kpi-card purple">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Total Enrollments</span>
+                        <span class="kpi-icon">📑</span>
+                    </div>
+                    <div class="kpi-value" id="kpiTotalEnrollments">0</div>
+                    <div class="kpi-subtitle">Course enrollments</div>
+                </div>
+
+                <div class="kpi-card amber">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Total Seat Capacity</span>
+                        <span class="kpi-icon">🏛️</span>
+                    </div>
+                    <div class="kpi-value" id="kpiTotalCapacity">0</div>
+                    <div class="kpi-subtitle">Total seats in all courses</div>
+                </div>
+            </div>
+
+            <!-- Shortcuts -->
+            <h3 style="margin: 1.5rem 0 1rem 0; font-size: 1.15rem;">Management Sections</h3>
+            <div class="course-grid">
+                <div class="course-card" style="cursor: pointer;" onclick="switchAdminView('courses')">
+                    <h3 class="course-title">Courses Management</h3>
+                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                        View curriculum, add courses, and monitor seat capacities.
+                    </p>
+                    <div class="course-card-actions">
+                        <button class="btn btn-secondary btn-sm" style="width: 100%;">Open Courses →</button>
+                    </div>
+                </div>
+
+                <div class="course-card" style="cursor: pointer;" onclick="switchAdminView('students')">
+                    <h3 class="course-title">Student Directory</h3>
+                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                        View students, inspect enrolled courses, and add student records.
+                    </p>
+                    <div class="course-card-actions">
+                        <button class="btn btn-secondary btn-sm" style="width: 100%;">Open Students →</button>
+                    </div>
+                </div>
+
+                <div class="course-card" style="cursor: pointer;" onclick="switchAdminView('enrollments')">
+                    <h3 class="course-title">Enrollment Manager</h3>
+                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                        Assign students to courses and oversee registrations.
+                    </p>
+                    <div class="course-card-actions">
+                        <button class="btn btn-secondary btn-sm" style="width: 100%;">Open Enrollments →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- View 2: Courses Management -->
+        <section id="adminView_courses" class="admin-view-section">
+            <div class="view-header">
+                <div class="view-title-group">
+                    <h1>Course Management</h1>
+                    <p>Curriculum offerings and capacity settings.</p>
+                </div>
+                <div class="view-actions">
+                    <button class="btn btn-primary btn-sm" onclick="openModal('addCourseModal')">
+                        + Add Course
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-toolbar">
+                    <div class="search-input-wrap">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="adminCourseSearch" placeholder="Search courses...">
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Course Name</th>
+                            <th>Credits</th>
+                            <th>Capacity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminCoursesTableBody">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- View 3: Student Directory -->
+        <section id="adminView_students" class="admin-view-section">
+            <div class="view-header">
+                <div class="view-title-group">
+                    <h1>Student Directory</h1>
+                    <p>Manage registered students and view their schedules.</p>
+                </div>
+                <div class="view-actions">
+                    <button class="btn btn-primary btn-sm" onclick="openModal('addStudentModal')">
+                        + Add Student
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-toolbar">
+                    <div class="search-input-wrap">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="adminStudentSearch" placeholder="Search students by name or email...">
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email Address</th>
+                            <th>Enrolled</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminStudentsTableBody">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- View 4: Enrollment Hub -->
+        <section id="adminView_enrollments" class="admin-view-section">
+            <div class="view-header">
+                <div class="view-title-group">
+                    <h1>Enrollment Management</h1>
+                    <p>Assign students to courses and view records.</p>
+                </div>
+                <div class="view-actions">
+                    <button class="btn btn-primary btn-sm" onclick="openModal('manualEnrollModal')">
+                        + Assign Enrollment
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-toolbar">
+                    <div style="font-weight: 600; font-size: 0.9rem;">Active Enrollments</div>
+                    <button class="btn btn-secondary btn-sm" onclick="loadAdminData()">Refresh</button>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Course Name</th>
+                            <th>Credits</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminEnrollmentsTableBody">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- =========================================================================
+     MODALS
+     ========================================================================= -->
+
+<!-- Add Course Modal -->
+<div id="addCourseModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3 class="modal-title">Add Course</h3>
+            <button class="modal-close" onclick="closeModal('addCourseModal')">&times;</button>
+        </div>
+        <form id="addCourseForm">
+            <div class="form-group">
+                <label for="newCourseName" class="form-label">Course Name</label>
+                <input type="text" id="newCourseName" class="form-control" placeholder="e.g. Introduction to Programming" required>
+            </div>
+            <div class="form-group">
+                <label for="newCourseCredits" class="form-label">Credits</label>
+                <input type="number" id="newCourseCredits" class="form-control" placeholder="e.g. 4" min="1" max="12" required>
+            </div>
+            <div class="form-group">
+                <label for="newCourseCapacity" class="form-label">Max Seat Capacity</label>
+                <input type="number" id="newCourseCapacity" class="form-control" placeholder="e.g. 30" min="1" max="500" required>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('addCourseModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-sm">Save Course</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Add Student Modal -->
+<div id="addStudentModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3 class="modal-title">Add Student</h3>
+            <button class="modal-close" onclick="closeModal('addStudentModal')">&times;</button>
+        </div>
+        <form id="addStudentForm">
+            <div class="form-group">
+                <label for="newStudentName" class="form-label">Student Name</label>
+                <input type="text" id="newStudentName" class="form-control" placeholder="e.g. Alice Smith" required>
+            </div>
+            <div class="form-group">
+                <label for="newStudentUsername" class="form-label">Username</label>
+                <input type="text" id="newStudentUsername" class="form-control" placeholder="e.g. alice_smith" minlength="3" maxlength="50" required>
+            </div>
+            <div class="form-group">
+                <label for="newStudentPassword" class="form-label">Login Password</label>
+                <input type="password" id="newStudentPassword" class="form-control" placeholder="Minimum 6 characters" minlength="6" maxlength="100" required>
+            </div>
+            <div class="form-group">
+                <label for="newStudentEmail" class="form-label">Email Address</label>
+                <input type="email" id="newStudentEmail" class="form-control" placeholder="e.g. alice@example.com" required>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('addStudentModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-sm">Save Student</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Manual Enroll Modal -->
+<div id="manualEnrollModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3 class="modal-title">Assign Course Enrollment</h3>
+            <button class="modal-close" onclick="closeModal('manualEnrollModal')">&times;</button>
+        </div>
+        <form id="manualEnrollForm">
+            <div class="form-group">
+                <label for="enrollStudentSelect" class="form-label">Select Student</label>
+                <select id="enrollStudentSelect" class="form-control" required>
+                    <option value="">Loading students...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="enrollCourseSelect" class="form-label">Select Course</label>
+                <select id="enrollCourseSelect" class="form-control" required>
+                    <option value="">Loading courses...</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('manualEnrollModal')">Cancel</button>
+                <button type="submit" class="btn btn-primary btn-sm">Enroll Student</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Course Details Modal -->
+<div id="courseDetailsModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modalCourseTitle">Course Details</h3>
+            <button class="modal-close" onclick="closeModal('courseDetailsModal')">&times;</button>
+        </div>
+        <div style="padding: 0.5rem 0;">
+            <div class="profile-grid">
+                <div class="profile-field">
+                    <div class="profile-field-label">Course ID</div>
+                    <div class="profile-field-value" id="modalCourseId">#1</div>
+                </div>
+                <div class="profile-field">
+                    <div class="profile-field-label">Credits</div>
+                    <div class="profile-field-value" id="modalCourseCredits">4 Credits</div>
+                </div>
+            </div>
+            <div class="profile-field" style="margin-top: 0.75rem;">
+                <div class="profile-field-label">Capacity</div>
+                <div class="profile-field-value" id="modalCourseCapacity">30 Seats</div>
+            </div>
+            <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary);">
+                This course is active and available for student enrollment this semester.
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('courseDetailsModal')">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Inspect Student Enrolled Courses Modal -->
+<div id="studentCoursesModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 600px;">
+        <div class="modal-header">
+            <h3 class="modal-title" id="studentCoursesModalTitle">Enrolled Courses</h3>
+            <button class="modal-close" onclick="closeModal('studentCoursesModal')">&times;</button>
+        </div>
+        <div id="studentCoursesModalList" style="padding: 0.5rem 0; max-height: 55vh; overflow-y: auto;">
+            <!-- Populated via JS -->
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('studentCoursesModal')">Close</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>
