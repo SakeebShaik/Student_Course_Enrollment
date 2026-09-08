@@ -55,6 +55,7 @@ Application Screenshots
 
 Login Page
 
+<img width="1919" height="943" alt="image" src="https://github.com/user-attachments/assets/0b0c321b-64b5-4e70-9d8f-e2c91aa08131" />
 
 
 
