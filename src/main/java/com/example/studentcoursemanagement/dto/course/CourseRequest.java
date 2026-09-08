@@ -15,13 +15,13 @@ public class CourseRequest {
     private String name;
 
     @NotNull(message = "Credits are required")
-    @Min(value = 1, message = "Credits must be at least 1")
-    @Max(value = 12, message = "Credits must not exceed 12")
+    @Min(value = 3, message = "Credits must be at least 3")
+    @Max(value = 6, message = "Credits must not exceed 6")
     private Integer credits;
 
     @NotNull(message = "Capacity is required")
     @Min(value = 1, message = "Capacity must be at least 1")
-    @Max(value = 500, message = "Capacity must not exceed 500")
+    @Max(value = 200, message = "Capacity must not exceed 500")
     private Integer capacity;
 
     public CourseRequest() {

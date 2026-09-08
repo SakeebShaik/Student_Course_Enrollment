@@ -25,7 +25,7 @@ public class Student {
     @Size(max = 150, message = "Email must not exceed 150 characters")
     @Column(nullable = false, unique = true)
     @Pattern(
-            regexp = "^[A-Za-z0-9._%+-]+@gmail\\.com$",
+            regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
             message = "Please provide a valid Gmail address"
     )
     private String email;

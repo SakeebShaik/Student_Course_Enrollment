@@ -29,8 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const password = passwordInput.value;
         const confirmPassword = confirmPasswordInput.value;
 
-        if (!/^[A-Za-z0-9._-]{3,50}$/.test(username)) {
-            showToast("Validation Error", "Username must be 3-50 characters and contain only letters, numbers, dots, underscores or hyphens.", "warning");
+        if (!/^[A-Za-z][A-Za-z0-9_-]{3,50}$/.test(username)) {
+            showToast("Validation Error", "Username must be starts with letters and may contains numbers, and is should be 3-50 characters and contain only letters, numbers, dots, underscores or hyphens.", "warning");
             return;
         }
 

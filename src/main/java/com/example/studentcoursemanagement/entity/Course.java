@@ -1,10 +1,7 @@
 package com.example.studentcoursemanagement.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "courses", uniqueConstraints = {
@@ -24,6 +21,8 @@ public class Course {
     @NotNull
     @Positive(message = "Credits must be greater than zero")
     @Column(nullable = false)
+    @Min(value = 3, message = "Credits must be atleast 3")
+    @Max(value = 6, message = "Credits must not exceed morethan 6")
     private Integer credits;
 
     @NotNull
