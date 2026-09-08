@@ -53,8 +53,6 @@ Separate Admin and Student navigation.
 Toast notifications for success and error messages.
 Application Screenshots
 
-Create a screenshots folder in the root of the project and place your screenshots there.
-
 Login Page
 
 
